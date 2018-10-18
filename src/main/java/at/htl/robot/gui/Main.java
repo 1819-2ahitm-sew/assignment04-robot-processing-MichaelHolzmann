@@ -7,6 +7,14 @@ import processing.core.PApplet;
 public class Main extends PApplet {
 
     // Hier die Member-Attribute eintragen
+    int marginLeft = 50;
+    int marginRight = 50;
+    int marginTop = 50;
+    int marginBottom = 50;
+    int boxHeight;
+    int boxWidth;
+    Robot myRobot = new Robot();
+
 
     public static void main(String[] args) {
         PApplet.main("at.htl.robot.gui.Main", args);
@@ -14,12 +22,15 @@ public class Main extends PApplet {
 
     public void settings() {
         size(800, 800);
+        boxWidth = (width - marginLeft - marginRight) / 10;
+        boxHeight = (height - marginTop - marginBottom) / 10;
+
+        myRobot.setX(3);
+        myRobot.setY(2);
     }
 
     public void setup() {
-        background(209); //https://processing.org/tutorials/color/
-
-
+        background(g.backgroundColor);
     }
 
     /**
@@ -27,6 +38,19 @@ public class Main extends PApplet {
      */
     public void draw() {
 
+        deleteAll();
+
+        // draw horizontal lines
+        for (int i = 0; i <= 10; i++) {
+            line(marginLeft, marginTop + i * boxHeight, width - marginRight, marginTop + i * boxHeight);
+        }
+
+        //draw vertical lines
+        for (int i = 0; i <= 10; i++) {
+            line(marginLeft + i * boxWidth, marginTop, marginLeft + i * boxWidth, height - marginBottom);
+        }
+
+        drawRobot(myRobot);
     }
 
     /**
@@ -37,7 +61,9 @@ public class Main extends PApplet {
      * @param robot Objekt des zu zeichnenden Roboters
      */
     public void drawRobot(Robot robot) {
-
+        int centerX = marginLeft + robot.getX() * boxWidth - boxWidth/2;
+        int centerY = marginTop + robot.getY() * boxHeight - boxHeight/2;
+        ellipse(centerX, centerY, boxWidth * 0.8f, boxHeight * 0.8f);
 
     }
 
@@ -45,7 +71,7 @@ public class Main extends PApplet {
      * Erstellen Sie eine eigene Methode zum Löschen des Bildschirms
      */
     public void deleteAll() {
-
+        background(209);
     }
 
     /**
@@ -55,11 +81,10 @@ public class Main extends PApplet {
         println("pressed " + key + " " + keyCode);
 
         if (key == 'f' || key == 'F') {
-
+            myRobot.stepForward();
         } else if (key == 'l' || key == 'L') {
-
+            myRobot.rotateLeft();
         }
-
     }
 
 //    public void keyTyped() {
